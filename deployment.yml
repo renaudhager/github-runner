@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: github-runner
-        image: renaudhager/github-runner:latest
+        image: renaudhager/github-runner:init
+        imagePullPolicy: Always
         env:
         - name: GITHUB_OWNER
           value: efcloud
@@ -30,3 +31,10 @@ spec:
               key: token
         - name: RUNNER_LABELS
           value: k8s,test
+        volumeMounts:
+          - name: dockersocket
+            mountPath: /var/run/docker.sock
+      volumes:
+        - hostPath:
+            path: /var/run/docker.sock
+          name: dockersocket
