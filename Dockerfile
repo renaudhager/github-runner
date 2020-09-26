@@ -20,6 +20,7 @@ RUN apt-get update \
         gnupg-agent \
         software-properties-common \
         procps \
+        gettext-base \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -m github \
