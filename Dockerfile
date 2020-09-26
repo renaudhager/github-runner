@@ -5,7 +5,7 @@ ENV GITHUB_OWNER ""
 ENV GITHUB_REPOSITORY ""
 ENV RUNNER_WORKDIR "_work"
 ENV RUNNER_LABELS ""
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND "noninteractive"
 
 RUN apt-get update \
     && apt-get install -y \
@@ -19,6 +19,7 @@ RUN apt-get update \
         curl \
         gnupg-agent \
         software-properties-common \
+        procps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -m github \
@@ -32,6 +33,10 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
 RUN pip3 install awscli
 
 RUN usermod -aG sudo,docker,root github
+
+RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    mv kubectl /usr/local/bin/kubectl && \
+    chmod 755 /usr/local/bin/kubectl
 
 USER github
 WORKDIR /home/github
