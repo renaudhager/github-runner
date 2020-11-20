@@ -21,6 +21,7 @@ RUN apt-get update \
         software-properties-common \
         procps \
         gettext-base \
+        gnupg2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -m github \
@@ -47,6 +48,7 @@ RUN GITHUB_RUNNER_VERSION=$(curl --silent "https://api.github.com/repos/actions/
     && sudo ./bin/installdependencies.sh
 
 COPY --chown=github:github entrypoint.sh ./entrypoint.sh
-RUN sudo chmod u+x ./entrypoint.sh
+COPY --chown=github:github runsvc.sh ./runsvc.sh
+RUN sudo chmod u+x ./entrypoint.sh ./runsvc.sh
 
 ENTRYPOINT ["/home/github/entrypoint.sh"]
